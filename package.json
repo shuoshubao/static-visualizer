@@ -1,0 +1,32 @@
+{
+  "name": "static-visualizer",
+  "version": "0.1.0",
+  "repository": {
+    "url": "https://github.com/shuoshubao/static-visualizer.git",
+    "type": "git"
+  },
+  "author": "shuoshubao <759979885@qq.com>",
+  "files": [
+    "dist",
+    "index.js"
+  ],
+  "scripts": {
+    "start": "esbuild lib/index.js  --outdir=dist --loader:.js=jsx --bundle --watch",
+    "build": "esbuild lib/index.js --outdir=dist --loader:.js=jsx --bundle --minify",
+    "prepublishOnly": "npm run build"
+  },
+  "dependencies": {
+    "@nbfe/js2html": "^1.1.8",
+    "chalk": "^4.1.2",
+    "glob": "^8.0.3",
+    "koa": "^2.14.1",
+    "mime-types": "^2.1.35",
+    "yargs": "^17.6.2"
+  },
+  "devDependencies": {
+    "antd": "^5.1.1",
+    "filesize": "^8.0.7",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
+  }
+}
