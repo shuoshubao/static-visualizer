@@ -5,11 +5,13 @@ const { resolve, join, relative } = require('path')
 const yargs = require('yargs/yargs')
 const { hideBin } = require('yargs/helpers')
 const Koa = require('koa')
+const portfinder = require('portfinder')
 const mime = require('mime-types')
 const chalk = require('chalk')
 const glob = require('glob')
-const { first, sortBy } = require('lodash')
+const { startCase, first, sortBy } = require('lodash')
 const { generateDocument } = require('@nbfe/js2html')
+const { name: pkgName } = require('./package')
 
 const { argv } = yargs(hideBin(process.argv))
 
@@ -26,7 +28,7 @@ const JsUrl = ['', VirtualPath, 'index.js'].join('/')
 
 const getHtml = data => {
   return generateDocument({
-    title: 'Static Visualizer',
+    title: startCase(pkgName),
     meta: [
       {
         charset: 'utf-8'
@@ -97,8 +99,7 @@ app.use(async ctx => {
       code: 404,
       name: '',
       isFile: false,
-      size: 0,
-      mtime: 0
+      size: 0
     })
     ctx.body = html
     return
@@ -126,13 +127,12 @@ app.use(async ctx => {
     }
     const files = glob.sync(`${absolutePath}/*`).map(v => {
       const stats = lstatSync(v)
-      const { size, mtime } = stats
+      const { size } = stats
       return {
         code: 200,
         name: relative(absolutePath, v),
         isFile: stats.isFile(),
-        size,
-        mtime
+        size
       }
     })
     const data = {
@@ -144,6 +144,31 @@ app.use(async ctx => {
     ctx.body = html
     return
   }
+
+  ctx.body = absolutePath
 })
 
-app.listen(3000)
+const logServerInfo = port => {
+  console.log(chalk.green('Directory:'), root)
+  console.log(chalk.green('Serving:'), `http://localhost:${port}`)
+}
+
+const SpecificPort = argv.p || argv.port
+
+if (SpecificPort) {
+  app.listen(SpecificPort)
+  logServerInfo(SpecificPort)
+} else {
+  portfinder.setBasePort(3000)
+  portfinder.setHighestPort(4000)
+  portfinder
+    .getPortPromise()
+    .then(port => {
+      app.listen(port)
+      logServerInfo(port)
+    })
+    .catch(err => {
+      console.log('Could not get a free port.')
+      console.log(err)
+    })
+}
