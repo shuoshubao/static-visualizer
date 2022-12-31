@@ -1,6 +1,6 @@
 {
   "name": "static-visualizer",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "A visualizer static server",
   "repository": {
     "url": "https://github.com/shuoshubao/static-visualizer.git",
