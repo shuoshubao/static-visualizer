@@ -22,11 +22,12 @@ const formatTime = time => {
   return [dt.toLocaleDateString(), dt.toLocaleTimeString()].join(' ')
 }
 
-const VirtualPath = [Date.now(), Math.random()].join('@')
+const VirtualPath = [Date.now(), Math.random()].join('_')
 
 const JsUrl = ['', VirtualPath, 'index.js'].join('/')
 
 const getHtml = data => {
+  data.VirtualPath = VirtualPath
   return generateDocument({
     title: startCase(pkgName),
     meta: [
