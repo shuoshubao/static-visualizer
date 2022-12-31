@@ -24,7 +24,7 @@ const formatTime = time => {
 
 const VirtualPath = [Date.now(), Math.random()].join('_')
 
-const JsUrl = ['', VirtualPath, 'index.js'].join('/')
+const JavaScriptVirtualPath = ['', VirtualPath, 'index.js'].join('/')
 
 const getHtml = data => {
   data.VirtualPath = VirtualPath
@@ -57,7 +57,7 @@ const getHtml = data => {
         text: `window.data = ${JSON.stringify(data)}`
       },
       {
-        src: JsUrl
+        src: JavaScriptVirtualPath
       }
     ]
   })
@@ -77,7 +77,7 @@ app.use(async ctx => {
     return
   }
 
-  if (url === JsUrl) {
+  if (url === JavaScriptVirtualPath) {
     ctx.type = 'application/javascript'
     ctx.body = readFileSync(resolve(__dirname, 'dist/index.js'))
     return
@@ -86,14 +86,6 @@ app.use(async ctx => {
   console.log(chalk.dim(formatTime(time)), method.padEnd(5, ' '), chalk.cyan(url))
 
   const absolutePath = join(root, url)
-
-  const absolutePathHtml = [absolutePath, '.html'].join('')
-
-  if (existsSync(absolutePathHtml)) {
-    ctx.type = 'text/html'
-    ctx.body = readFileSync(absolutePathHtml)
-    return
-  }
 
   if (!existsSync(absolutePath)) {
     const html = getHtml({
