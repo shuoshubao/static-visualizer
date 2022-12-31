@@ -83,7 +83,7 @@ app.use(async ctx => {
     return
   }
 
-  console.log(chalk.dim(formatTime(time)), method.padEnd(5, ' '), chalk.cyan(url))
+  console.log(chalk.cyan(formatTime(time)), chalk.yellow(method.padEnd(4, ' ')), chalk.green(url))
 
   const absolutePath = join(root, url)
 
