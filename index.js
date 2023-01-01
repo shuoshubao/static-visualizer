@@ -5,6 +5,7 @@ const { resolve, join, relative } = require('path')
 const yargs = require('yargs/yargs')
 const { hideBin } = require('yargs/helpers')
 const Koa = require('koa')
+const cors = require('@koa/cors')
 const portfinder = require('portfinder')
 const mime = require('mime-types')
 const chalk = require('chalk')
@@ -16,6 +17,8 @@ const { name: pkgName } = require('./package')
 const { argv } = yargs(hideBin(process.argv))
 
 const app = new Koa()
+
+app.use(cors())
 
 const formatTime = time => {
   const dt = new Date(time)
