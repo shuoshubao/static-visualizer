@@ -14,6 +14,14 @@
     "dist",
     "index.js"
   ],
+  "keywords": [
+    "static",
+    "server",
+    "serve",
+    "static-server",
+    "http-server",
+    "visualizer"
+  ],
   "scripts": {
     "start": "esbuild lib/index.js  --outdir=dist --loader:.js=jsx --bundle --watch",
     "build": "esbuild lib/index.js --outdir=dist --loader:.js=jsx --bundle --minify",
