@@ -25,6 +25,10 @@ const formatTime = time => {
   return [dt.toLocaleDateString(), dt.toLocaleTimeString()].join(' ')
 }
 
+const cwd = process.cwd()
+
+const root = resolve(cwd, first(argv._) || '')
+
 const VirtualPath = [Date.now(), Math.random()].join('_')
 
 const JavaScriptVirtualPath = ['', VirtualPath, 'index.js'].join('/')
@@ -65,10 +69,6 @@ const getHtml = data => {
     ]
   })
 }
-
-const cwd = process.cwd()
-
-const root = resolve(cwd, first(argv._) || '')
 
 app.use(async ctx => {
   const time = Date.now()
