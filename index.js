@@ -95,7 +95,10 @@ app.use(async ctx => {
       code: 404,
       name: '',
       isFile: false,
-      size: 0
+      type: '',
+      size: 0,
+      ctime: '',
+      mtime: ''
     })
     ctx.body = html
     return
@@ -123,12 +126,16 @@ app.use(async ctx => {
     }
     const files = glob.sync(`${absolutePath}/*`).map(v => {
       const stats = lstatSync(v)
-      const { size } = stats
+      const { size, ctime, mtime } = stats
+      const isFile = stats.isFile()
       return {
         code: 200,
         name: relative(absolutePath, v),
-        isFile: stats.isFile(),
-        size
+        isFile,
+        type: isFile ? mime.lookup(v) || 'text/plain' : 'folder',
+        size,
+        ctime,
+        mtime
       }
     })
     const data = {
